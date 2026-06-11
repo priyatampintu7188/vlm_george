@@ -44,8 +44,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
     };
 
     return (
-        <div className="w-full max-w-3xl mx-auto p-4">
-            <form onSubmit={handleSubmit} className="relative bg-[var(--input-bg)] rounded-2xl border border-[var(--input-border)] focus-within:ring-1 focus-within:ring-[var(--text-secondary)] p-2 pl-4 shadow-lg transition-colors duration-300">
+        <div className="w-full max-w-3xl mx-auto p-4 transition-colors duration-300">
+            <form onSubmit={handleSubmit} className="relative bg-[var(--input-bg)] rounded-2xl border border-[var(--input-border)] p-2 pl-4 shadow-sm transition-colors duration-300">
 
                 {/* File Preview Area */}
                 {file && (
@@ -109,7 +109,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
                     </button>
                 </div>
             </form>
-            <div className="text-center mt-2 text-xs text-[var(--text-secondary)] opacity-60 font-medium">
+            <div className="text-center mt-2 text-xs text-[var(--text-secondary)] opacity-50">
                 AI can make mistakes. Verify important information.
             </div>
         </div>
