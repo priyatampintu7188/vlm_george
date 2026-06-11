@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, Plus, LogOut, Sun, Moon } from 'lucide-react';
+import { MessageSquare, Plus, LogOut, Sun, Moon, Trash2 } from 'lucide-react';
 import type { ChatSession, User } from '../types';
 
 interface SidebarProps {
@@ -8,6 +8,7 @@ interface SidebarProps {
     user: User;
     theme: 'light' | 'dark';
     onSelectChat: (id: string) => void;
+    onDeleteChat: (id: string) => void;
     onNewChat: () => void;
     onLogout: () => void;
     onToggleTheme: () => void;
@@ -19,6 +20,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     user,
     theme,
     onSelectChat,
+    onDeleteChat,
     onNewChat,
     onLogout,
     onToggleTheme
@@ -52,17 +54,28 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className="text-gray-500 px-2 italic text-xs">No recent chats</div>
                 ) : (
                     chats.map(chat => (
-                        <button
-                            key={chat.id}
-                            onClick={() => onSelectChat(chat.id)}
-                            className={`w-full text-left p-2 rounded-lg truncate flex items-center gap-2 ${currentChatId === chat.id
-                                ? 'bg-[var(--bubble-user)] text-[var(--text-main)] font-medium'
-                                : 'hover:bg-[var(--sidebar-bg)] hover:brightness-110'
-                                }`}
-                        >
-                            <MessageSquare size={16} className="shrink-0" />
-                            <span className="truncate">{chat.title}</span>
-                        </button>
+                        <div key={chat.id} className="group relative flex items-center">
+                            <button
+                                onClick={() => onSelectChat(chat.id)}
+                                className={`flex-1 text-left p-2 rounded-lg truncate flex items-center gap-2 transition-colors ${currentChatId === chat.id
+                                    ? 'bg-[var(--bubble-user)] text-[var(--text-main)] font-medium'
+                                    : 'hover:bg-[var(--sidebar-bg)] hover:brightness-110'
+                                    }`}
+                            >
+                                <MessageSquare size={16} className="shrink-0" />
+                                <span className="truncate pr-8">{chat.title}</span>
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDeleteChat(chat.id);
+                                }}
+                                className="absolute right-2 p-1.5 rounded-md text-gray-500 hover:text-red-500 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all shadow-sm"
+                                title="Delete Chat"
+                            >
+                                <Trash2 size={14} />
+                            </button>
+                        </div>
                     ))
                 )}
             </div>

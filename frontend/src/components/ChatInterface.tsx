@@ -169,6 +169,20 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
 
     // Removed handleScanOCR as OCR functionality is deprecated.
 
+    const handleDeleteChat = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this chat?")) return;
+        try {
+            await axios.delete(`${API_BASE}/chats/${id}`);
+            setChats(chats.filter(c => c.id !== id));
+            if (currentChatId === id) {
+                setCurrentChatId(null);
+                setMessages([]);
+            }
+        } catch (err) {
+            console.error("Failed to delete chat", err);
+        }
+    };
+
     return (
         <div className={`flex h-screen bg-[var(--main-bg)] overflow-hidden theme-${theme} transition-colors duration-300`}>
             {/* Sidebar (Desktop) */}
@@ -179,6 +193,7 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
                     user={user}
                     theme={theme}
                     onSelectChat={setCurrentChatId}
+                    onDeleteChat={handleDeleteChat}
                     onNewChat={handleNewChat}
                     onLogout={onLogout}
                     onToggleTheme={toggleTheme}
