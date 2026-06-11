@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Message } from '../types';
-import { Bot, User as UserIcon, FileText, Video } from 'lucide-react';
+import { Bot, User as UserIcon, Video } from 'lucide-react';
 
 interface MessageBubbleProps {
     message: Message;
