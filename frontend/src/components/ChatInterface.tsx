@@ -211,12 +211,9 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
                                 <MessageBubble key={msg.id} message={msg} />
                             ))}
                             {loading && (
-                                <div className="w-full py-6 bg-[#2a2a2a]">
-                                    <div className="max-w-3xl mx-auto flex gap-6 px-4">
-                                        <div className="w-8 h-8 rounded-full bg-[#10a37f] flex items-center justify-center shrink-0">
-                                            <span className="text-white text-xs">AI</span>
-                                        </div>
-                                        <div className="flex gap-1 mt-3">
+                                <div className="w-full py-6 bg-[var(--bubble-ai)] transition-colors duration-300">
+                                    <div className="max-w-3xl mx-auto px-4">
+                                        <div className="flex gap-1">
                                             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                                             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75"></div>
                                             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-150"></div>
