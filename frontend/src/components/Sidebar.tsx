@@ -1,28 +1,32 @@
 import React from 'react';
-import { MessageSquare, Plus, LogOut } from 'lucide-react';
+import { MessageSquare, Plus, LogOut, Sun, Moon } from 'lucide-react';
 import type { ChatSession, User } from '../types';
 
 interface SidebarProps {
     chats: ChatSession[];
     currentChatId: string | null;
     user: User;
+    theme: 'light' | 'dark';
     onSelectChat: (id: string) => void;
     onNewChat: () => void;
     onLogout: () => void;
+    onToggleTheme: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
     chats,
     currentChatId,
     user,
+    theme,
     onSelectChat,
     onNewChat,
-    onLogout
+    onLogout,
+    onToggleTheme
 }) => {
     return (
-        <div className="w-64 bg-[#171717] h-full flex flex-col text-sm text-gray-300 border-r border-[#303030]">
+        <div className="w-64 bg-[var(--sidebar-bg)] h-full flex flex-col text-sm text-[var(--text-secondary)] border-r border-[var(--sidebar-border)] transition-colors duration-300">
             {/* Logo area */}
-            <div className="p-4 border-b border-[#303030] flex items-center justify-center bg-[#212121]">
+            <div className="p-4 border-b border-[var(--sidebar-border)] flex items-center justify-center bg-[var(--header-bg)]">
                 <img src="/logo.png" alt="Company Logo" className="h-10 w-auto object-contain" />
             </div>
 
@@ -30,13 +34,13 @@ const Sidebar: React.FC<SidebarProps> = ({
             <div className="p-3 gap-2 flex">
                 <button
                     onClick={onNewChat}
-                    className="flex-1 flex items-center justify-between p-2 rounded-lg hover:bg-[#2f2f2f] transition bg-[#212121] border border-[#303030]"
+                    className="flex-1 flex items-center justify-between p-2 rounded-lg hover:bg-[var(--bubble-user)] transition bg-[var(--main-bg)] border border-[var(--sidebar-border)]"
                 >
                     <div className="flex items-center gap-2">
-                        <div className="bg-white text-black p-1 rounded">
+                        <div className="bg-[var(--text-main)] text-[var(--main-bg)] p-1 rounded">
                             <Plus size={16} />
                         </div>
-                        <span className="font-medium text-white">New chat</span>
+                        <span className="font-medium text-[var(--text-main)]">New chat</span>
                     </div>
                 </button>
             </div>
@@ -52,8 +56,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                             key={chat.id}
                             onClick={() => onSelectChat(chat.id)}
                             className={`w-full text-left p-2 rounded-lg truncate flex items-center gap-2 ${currentChatId === chat.id
-                                ? 'bg-[#2f2f2f] text-white'
-                                : 'hover:bg-[#212121]'
+                                ? 'bg-[var(--bubble-user)] text-[var(--text-main)] font-medium'
+                                : 'hover:bg-[var(--sidebar-bg)] hover:brightness-110'
                                 }`}
                         >
                             <MessageSquare size={16} className="shrink-0" />
@@ -63,11 +67,19 @@ const Sidebar: React.FC<SidebarProps> = ({
                 )}
             </div>
 
-            {/* User Profile */}
-            <div className="p-3 border-t border-[#303030]">
+            {/* Bottom Actions (Theme Toggle & Profile) */}
+            <div className="p-3 border-t border-[var(--sidebar-border)] space-y-1">
+                <button
+                    onClick={onToggleTheme}
+                    className="w-full p-2 rounded-lg hover:bg-[var(--sidebar-bg)] hover:brightness-110 flex items-center gap-2 transition text-[var(--text-main)]"
+                >
+                    {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                    <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                </button>
+
                 <button
                     onClick={onLogout}
-                    className="w-full p-2 rounded-lg hover:bg-[#212121] flex items-center justify-between transition"
+                    className="w-full p-2 rounded-lg hover:bg-[var(--sidebar-bg)] hover:brightness-110 flex items-center justify-between transition text-[var(--text-main)]"
                 >
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold">
@@ -75,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                         </div>
                         <span className="font-medium truncate max-w-[120px]">{user.username}</span>
                     </div>
-                    <LogOut size={16} className="text-gray-400" />
+                    <LogOut size={16} className="text-[var(--text-secondary)]" />
                 </button>
             </div>
         </div>

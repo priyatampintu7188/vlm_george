@@ -45,11 +45,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
 
     return (
         <div className="w-full max-w-3xl mx-auto p-4">
-            <form onSubmit={handleSubmit} className="relative bg-[#2f2f2f] rounded-2xl border border-[#424242] focus-within:ring-1 focus-within:ring-gray-400 p-2 pl-4">
+            <form onSubmit={handleSubmit} className="relative bg-[var(--input-bg)] rounded-2xl border border-[var(--input-border)] focus-within:ring-1 focus-within:ring-[var(--text-secondary)] p-2 pl-4 shadow-lg transition-colors duration-300">
 
                 {/* File Preview Area */}
                 {file && (
-                    <div className="mb-2 p-2 bg-[#424242] rounded-lg inline-flex items-center gap-2 max-w-[200px]">
+                    <div className="mb-2 p-2 bg-[var(--sidebar-bg)] rounded-lg inline-flex items-center gap-2 max-w-[200px] border border-[var(--sidebar-border)]">
                         {file.type.includes('image') ? (
                             <ImageIcon size={16} className="text-blue-400 shrink-0" />
                         ) : file.type.includes('video') ? (
@@ -57,11 +57,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
                         ) : (
                             <FileText size={16} className="text-red-400 shrink-0" />
                         )}
-                        <span className="text-xs truncate">{file.name}</span>
+                        <span className="text-xs truncate text-[var(--text-main)]">{file.name}</span>
                         <button
                             type="button"
                             onClick={handleRemoveFile}
-                            className="text-gray-400 hover:text-white shrink-0 ml-1"
+                            className="text-[var(--text-secondary)] hover:text-[var(--text-main)] shrink-0 ml-1"
                         >
                             <X size={14} />
                         </button>
@@ -74,7 +74,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={disabled}
-                        className="p-2 bg-transparent text-gray-400 hover:text-white rounded-full transition shrink-0"
+                        className="p-2 bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-main)] rounded-full transition shrink-0"
                     >
                         <PlusIcon />
                     </button>
@@ -93,7 +93,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
                         onKeyDown={handleKeyDown}
                         placeholder="Ask anything..."
                         disabled={disabled}
-                        className="w-full bg-transparent border-none outline-none resize-none max-h-32 min-h-[24px] overflow-y-auto text-white placeholder:text-gray-500 py-2"
+                        className="w-full bg-transparent border-none outline-none resize-none max-h-32 min-h-[24px] overflow-y-auto text-[var(--text-main)] placeholder:text-[var(--text-secondary)] py-2"
                         rows={1}
                         style={{ height: "auto" }}
                         autoFocus
@@ -103,13 +103,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
                     <button
                         type="submit"
                         disabled={disabled || (!message.trim() && !file)}
-                        className="p-2 bg-white text-black rounded-full hover:bg-gray-200 transition disabled:bg-[#424242] disabled:text-gray-500 shrink-0"
+                        className="p-2 bg-[var(--text-main)] text-[var(--main-bg)] rounded-full hover:opacity-90 transition disabled:bg-[var(--input-border)] disabled:text-[var(--text-secondary)] shrink-0"
                     >
                         <Send size={16} />
                     </button>
                 </div>
             </form>
-            <div className="text-center mt-2 text-xs text-gray-500">
+            <div className="text-center mt-2 text-xs text-[var(--text-secondary)] opacity-60 font-medium">
                 AI can make mistakes. Verify important information.
             </div>
         </div>

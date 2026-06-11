@@ -17,6 +17,7 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
+    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -37,6 +38,10 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
     };
 
     const fetchChats = async () => {
@@ -165,16 +170,18 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
     // Removed handleScanOCR as OCR functionality is deprecated.
 
     return (
-        <div className="flex h-screen bg-[#212121] overflow-hidden">
+        <div className={`flex h-screen bg-[var(--main-bg)] overflow-hidden theme-${theme} transition-colors duration-300`}>
             {/* Sidebar (Desktop) */}
             <div className="hidden md:block shrink-0">
                 <Sidebar
                     chats={chats}
                     currentChatId={currentChatId}
                     user={user}
+                    theme={theme}
                     onSelectChat={setCurrentChatId}
                     onNewChat={handleNewChat}
                     onLogout={onLogout}
+                    onToggleTheme={toggleTheme}
                 />
             </div>
 
@@ -182,8 +189,8 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
             <div className="flex-1 flex flex-col h-full relative">
 
                 {/* Header (Mobile) */}
-                <div className="md:hidden flex items-center p-4 border-b border-[#303030]">
-                    <h1 className="font-bold flex-1">VLM Chatbot</h1>
+                <div className="md:hidden flex items-center p-4 border-b border-[var(--sidebar-border)] bg-[var(--header-bg)]">
+                    <h1 className="font-bold flex-1 text-[var(--text-main)]">VLM Chatbot</h1>
                 </div>
 
                 {/* Messages Container */}
@@ -223,7 +230,7 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
                 </div>
 
                 {/* Input Area (Pinned to bottom) */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#212121] via-[#212121] to-transparent pt-10 pb-4">
+                <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[var(--main-bg)] via-[var(--main-bg)] to-transparent pt-10 pb-4`}>
                     <ChatInput
                         onSendMessage={handleSendMessage}
                         disabled={loading}
