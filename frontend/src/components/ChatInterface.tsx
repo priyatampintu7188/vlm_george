@@ -97,8 +97,10 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
                 attachment = {
                     type: uploadRes.data.type,
                     filename: uploadRes.data.filename,
-                    images: uploadRes.data.images, // array of base64 
-                    video_url: uploadRes.data.video_url
+                    images: uploadRes.data.images,           // base64 for images
+                    video_url: uploadRes.data.video_url,     // base64 frames for VLM
+                    video_id: uploadRes.data.video_id,       // UUID for browser playback
+                    video_ext: uploadRes.data.video_ext,
                 };
                 imagesB64 = uploadRes.data.images;
                 videoUrl = uploadRes.data.video_url;
@@ -117,7 +119,8 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
             timestamp: new Date().toISOString(),
             attachment,
             images: imagesB64,
-            video_url: videoUrl
+            video_url: videoUrl,
+            video_id: attachment?.video_id,
         };
         setMessages((prev: Message[]) => [...prev, newUserMsg]);
 

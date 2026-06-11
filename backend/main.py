@@ -110,10 +110,10 @@ def login(req: LoginRequest):
 @app.post("/api/upload")
 async def upload_file(file: UploadFile = File(...)):
     """
-    Accept an image, PDF or Video upload.
+    Accept an image or Video upload.
     - Images: returned as a single base64 string.
-    - Images: converted to base64.
-    - Videos: sample 32 frames, returned as a data URI.
+    - Videos: sample 32 frames for VLM (returned as video_url), and also
+      saves the original video file so it can be streamed in the browser.
     """
     content = await file.read()
     filename = file.filename or "upload"
@@ -121,8 +121,9 @@ async def upload_file(file: UploadFile = File(...)):
 
     logger.info(f"Received upload: {filename} ({len(content)} bytes)")
     
-    # Save to temp for processing
-    temp_path = UPLOADS_DIR / f"{uuid.uuid4()}{ext}"
+    # Save to disk for processing
+    video_id = str(uuid.uuid4())
+    temp_path = UPLOADS_DIR / f"{video_id}{ext}"
     temp_path.write_bytes(content)
 
     try:
@@ -145,17 +146,37 @@ async def upload_file(file: UploadFile = File(...)):
             frames, metadata = extract_frames(str(temp_path), num_frames=32)
             frames_b64 = ",".join([encode_image(f) for f in frames])
             video_data_url = f"data:video/jpeg;base64,{frames_b64}"
+            # Keep the original file for browser playback; return its ID
             return {
                 "type": "video",
                 "filename": filename,
-                "video_url": video_data_url,
+                "video_url": video_data_url,   # For VLM inference
+                "video_id": video_id,          # For browser playback
+                "video_ext": ext,
                 "metadata": metadata
             }
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported file type: {ext}")
-    finally:
+    except Exception:
+        # Clean up on failure
         if temp_path.exists():
             temp_path.unlink()
+        raise
+
+
+# ─── Video Serve Endpoint ──────────────────────────────────────────────────────
+
+from fastapi.responses import FileResponse
+
+@app.get("/api/videos/{video_id}")
+def serve_video(video_id: str):
+    """Serve a stored video file by its ID."""
+    # Find the file regardless of extension
+    for f in UPLOADS_DIR.iterdir():
+        if f.stem == video_id:
+            return FileResponse(str(f), media_type="video/mp4")
+    raise HTTPException(status_code=404, detail="Video not found")
+
 
 
 # ─── Chat Endpoints ────────────────────────────────────────────────────────────

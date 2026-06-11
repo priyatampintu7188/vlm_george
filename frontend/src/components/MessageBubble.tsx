@@ -22,15 +22,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, theme }) => {
 
                 <div className={`flex flex-col gap-2 min-w-0 flex-1 ${isUser ? 'items-end' : 'items-start'}`}>
                     {/* Attachment / Image Preview */}
-                    {(message.attachment || message.images || message.video_url) && (
+                    {(message.attachment || message.images || message.video_id) && (
                         <div className={`flex gap-2 flex-wrap mb-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
-                            {/* Video: show inline player */}
-                            {message.attachment?.type === 'video' || message.video_url ? (
+                            {/* Video: show inline player using /api/videos/{video_id} */}
+                            {(message.attachment?.type === 'video' || message.video_id || message.attachment?.video_id) ? (
                                 <div className="w-full max-w-sm rounded-xl overflow-hidden border border-[var(--input-border)] shadow-md bg-black">
                                     <video
                                         controls
                                         className="w-full max-h-56 object-contain"
-                                        src={message.video_url || message.attachment?.video_url}
+                                        src={`/api/videos/${message.video_id || message.attachment?.video_id}`}
                                     >
                                         Your browser does not support video playback.
                                     </video>
