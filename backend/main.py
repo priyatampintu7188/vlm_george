@@ -93,6 +93,7 @@ class ChatRequest(BaseModel):
     images: Optional[List[str]] = None  # base64 encoded images
     video_url: Optional[str] = None # data URI for video
     history: Optional[List[dict]] = None
+    attachment: Optional[dict] = None  # metadata: {type, filename}
 
 
 # ─── Auth Endpoint ─────────────────────────────────────────────────────────────
@@ -306,15 +307,29 @@ def chat(req: ChatRequest):
         "id": str(uuid.uuid4()),
         "role": "user",
         "content": req.message,
-        "image_count": len(req.images or []),
-        "has_video": bool(req.video_url),
         "timestamp": now,
     }
     
-    # Optional: If you want to PERSIST images/videos in history, uncomment below.
-    # Note: This will make chats.json very large.
-    # user_msg_record["images"] = req.images
-    # user_msg_record["video_url"] = req.video_url
+    # Persist images and video in history for display when re-loading a chat
+    if req.images:
+        user_msg_record["images"] = req.images
+    if req.video_url:
+        user_msg_record["video_url"] = req.video_url
+    # Save attachment metadata (type + filename) for UI display
+    if req.attachment:
+        user_msg_record["attachment"] = req.attachment
+    elif req.images:
+        user_msg_record["attachment"] = {
+            "type": "image",
+            "filename": "image",
+            "images": req.images
+        }
+    elif req.video_url:
+        user_msg_record["attachment"] = {
+            "type": "video",
+            "filename": "video",
+            "video_url": req.video_url
+        }
 
     assistant_msg_record = {
         "id": str(uuid.uuid4()),

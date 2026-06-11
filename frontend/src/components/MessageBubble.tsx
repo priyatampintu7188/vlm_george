@@ -22,19 +22,31 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, theme }) => {
 
                 <div className={`flex flex-col gap-2 min-w-0 flex-1 ${isUser ? 'items-end' : 'items-start'}`}>
                     {/* Attachment / Image Preview */}
-                    {message.attachment && (
+                    {(message.attachment || message.images || message.video_url) && (
                         <div className={`flex gap-2 flex-wrap mb-2 ${isUser ? 'justify-end' : 'justify-start'}`}>
-                            {message.attachment.type === 'video' ? (
-                                <div className="flex items-center gap-2 bg-[var(--input-bg)] p-3 rounded-xl border border-[var(--input-border)] max-w-sm shadow-sm">
-                                    <Video className="text-purple-400 shrink-0" />
-                                    <div className="text-sm">
-                                        <p className="font-medium truncate text-[var(--text-main)]">{message.attachment.filename}</p>
-                                        <p className="text-xs text-[var(--text-secondary)]">Video Sampled</p>
+                            {/* Video: show inline player */}
+                            {message.attachment?.type === 'video' || message.video_url ? (
+                                <div className="w-full max-w-sm rounded-xl overflow-hidden border border-[var(--input-border)] shadow-md bg-black">
+                                    <video
+                                        controls
+                                        className="w-full max-h-56 object-contain"
+                                        src={message.video_url || message.attachment?.video_url}
+                                    >
+                                        Your browser does not support video playback.
+                                    </video>
+                                    <div className="flex items-center gap-2 px-3 py-2 bg-[var(--input-bg)]">
+                                        <Video size={14} className="text-purple-400 shrink-0" />
+                                        <span className="text-xs truncate text-[var(--text-secondary)]">
+                                            {message.attachment?.filename || 'Video'}
+                                        </span>
                                     </div>
                                 </div>
-                            ) : message.attachment.images?.[0] ? (
+                            ) : null}
+
+                            {/* Image: show inline preview */}
+                            {message.attachment?.type === 'image' || (message.images && message.images.length > 0) ? (
                                 <img
-                                    src={`data:image/png;base64,${message.attachment.images[0]}`}
+                                    src={`data:image/png;base64,${(message.attachment?.images?.[0] ?? message.images?.[0])}`}
                                     alt="Uploaded file"
                                     className="max-w-[250px] rounded-xl border border-[var(--input-border)] shadow-md"
                                 />

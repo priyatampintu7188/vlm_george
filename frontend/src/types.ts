@@ -6,8 +6,8 @@ export interface User {
 export interface Attachment {
     type: 'image' | 'video';
     filename: string;
-    images?: string[]; 
-    video_url?: string; // data URI for video frames
+    images?: string[];         // base64 encoded frames (for images)
+    video_url?: string;        // data URI for video (stored in history)
 }
 
 export interface Message {

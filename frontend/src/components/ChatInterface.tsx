@@ -127,7 +127,11 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
                 chat_id: activeChatId,
                 message: content,
                 images: imagesB64,
-                video_url: videoUrl
+                video_url: videoUrl,
+                attachment: attachment ? {
+                    type: attachment.type,
+                    filename: attachment.filename
+                } : undefined
             }, {
                 timeout: 600000 // 10 minutes timeout for long-running vision tasks
             });
