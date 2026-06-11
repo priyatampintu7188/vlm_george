@@ -12,6 +12,8 @@
   --bubble-ai: #2a2a2a;
   --input-bg: #2f2f2f;
   --input-border: #424242;
+  --code-bg: #000000;
+  --code-text: #ececec;
   
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -34,6 +36,8 @@
   --bubble-ai: #ffffff;
   --input-bg: #ffffff;
   --input-border: #e5e5e5;
+  --code-bg: #f5f5f5;
+  --code-text: #0d0d0d;
 }
 
 body {
@@ -75,14 +79,17 @@ body {
 }
 
 .prose pre {
-  background-color: #000;
+  background-color: var(--code-bg);
+  color: var(--code-text);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
+  border: 1px solid var(--sidebar-border);
 }
 
 .prose code {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--code-bg);
+  color: var(--code-text);
   padding: 0.1rem 0.3rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;

@@ -223,7 +223,7 @@ const ChatInterface: React.FC<Props> = ({ user, onLogout }) => {
                     ) : (
                         <div className="pb-4">
                             {messages.map(msg => (
-                                <MessageBubble key={msg.id} message={msg} />
+                                <MessageBubble key={msg.id} message={msg} theme={theme} />
                             ))}
                             {loading && (
                                 <div className="w-full py-6 bg-[var(--bubble-ai)] transition-colors duration-300">

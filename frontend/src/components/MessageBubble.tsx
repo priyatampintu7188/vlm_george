@@ -5,9 +5,10 @@ import ReactMarkdown from 'react-markdown';
 
 interface MessageBubbleProps {
     message: Message;
+    theme: 'light' | 'dark';
 }
 
-const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
+const MessageBubble: React.FC<MessageBubbleProps> = ({ message, theme }) => {
     const isUser = message.role === 'user';
 
     return (
@@ -42,7 +43,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
                     )}
 
                     {/* Text Content */}
-                    <div className={`prose prose-invert max-w-none break-words text-[var(--text-main)] ${isUser ? 'bg-[var(--bubble-user)] px-4 py-2 rounded-2xl shadow-sm' : ''}`}>
+                    <div className={`prose ${theme === 'dark' ? 'prose-invert' : ''} max-w-none break-words text-[var(--text-main)] ${isUser ? 'bg-[var(--bubble-user)] px-4 py-2 rounded-2xl shadow-sm' : ''}`}>
                         <ReactMarkdown>
                             {message.content}
                         </ReactMarkdown>
