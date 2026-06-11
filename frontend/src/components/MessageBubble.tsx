@@ -24,6 +24,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
                     {/* Attachment / Image Preview */}
                     {message.attachment && (
                         <div className="flex gap-2 flex-wrap mb-2">
+                            {message.attachment.type === 'video' ? (
                                 <div className="flex items-center gap-2 bg-[#424242] p-3 rounded-xl max-w-sm">
                                     <Video className="text-purple-400 shrink-0" />
                                     <div className="text-sm">
