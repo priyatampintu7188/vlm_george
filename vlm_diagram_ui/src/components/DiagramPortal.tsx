@@ -135,17 +135,29 @@ const DiagramPortal: React.FC<Props> = ({ user, onLogout }) => {
 
           {/* Sample Videos */}
           <div className="mt-4">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Try a Sample Video</p>
-            <div className="flex gap-2">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Try a Sample Video</p>
+            <div className="flex gap-4">
               {samples.map((s) => (
-                <button
+                <div
                   key={s.url}
                   onClick={() => handleSampleClick(s)}
-                  disabled={loading}
-                  className="flex-1 py-2 px-3 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-indigo-400 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2"
+                  className="group relative flex-1 aspect-video cursor-pointer rounded-xl overflow-hidden border-2 border-transparent hover:border-indigo-500 transition-all shadow-sm"
                 >
-                  <FileVideo className="w-4 h-4 text-indigo-400" /> {s.name}
-                </button>
+                  <video
+                    src={s.url}
+                    muted
+                    loop
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                    onMouseEnter={(e) => e.currentTarget.play()}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.pause();
+                      e.currentTarget.currentTime = 0;
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                    <p className="text-white text-xs font-bold">{s.name}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
