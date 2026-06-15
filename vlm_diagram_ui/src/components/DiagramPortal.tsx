@@ -133,15 +133,38 @@ const DiagramPortal: React.FC<Props> = ({ user, onLogout }) => {
             <input ref={fileInputRef} type="file" accept="video/*" className="hidden" onChange={handleFileSelect} />
           </div>
 
+          {/* Video Preview */}
+          {videoPreviewUrl && (
+            <div className="mt-6 border-b border-slate-100 pb-8">
+              <p className="text-sm font-bold text-slate-600 mb-2">Preview: {videoFile?.name}</p>
+              <div className="rounded-xl overflow-hidden bg-slate-900 aspect-video shadow-lg ring-1 ring-slate-200">
+                <video src={videoPreviewUrl} controls className="w-full h-full" />
+              </div>
+              <button
+                onClick={handleAnalyze}
+                disabled={loading}
+                className="mt-4 w-full py-4 text-lg font-bold text-white bg-gradient-to-r from-indigo-600 to-blue-700 rounded-xl shadow-xl shadow-indigo-200 hover:shadow-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
+              >
+                {loading ? (
+                  <><Loader2 className="w-6 h-6 animate-spin" /> Analyzing Scene...</>
+                ) : (
+                  <><ImageIcon className="w-6 h-6" /> Generate Accident Diagram</>
+                )}
+              </button>
+            </div>
+          )}
+
           {/* Sample Videos */}
-          <div className="mt-4">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Try a Sample Video</p>
+          <div className="mt-8">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+              <FileVideo className="w-4 h-4" /> Try a Sample Video
+            </p>
             <div className="flex gap-4">
               {samples.map((s) => (
                 <div
                   key={s.url}
                   onClick={() => handleSampleClick(s)}
-                  className="group relative flex-1 aspect-video cursor-pointer rounded-xl overflow-hidden border-2 border-transparent hover:border-indigo-500 transition-all shadow-sm"
+                  className="group relative flex-1 aspect-video cursor-pointer rounded-xl overflow-hidden border-2 border-transparent hover:border-indigo-500 transition-all shadow-md"
                 >
                   <video
                     src={s.url}
@@ -154,32 +177,13 @@ const DiagramPortal: React.FC<Props> = ({ user, onLogout }) => {
                       e.currentTarget.currentTime = 0;
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
-                    <p className="text-white text-xs font-bold">{s.name}</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                    <p className="text-white text-[10px] font-bold uppercase tracking-widest">{s.name}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Video Preview */}
-          {videoPreviewUrl && (
-            <div className="mt-6">
-              <p className="text-sm font-bold text-slate-600 mb-2">Preview: {videoFile?.name}</p>
-              <video src={videoPreviewUrl} controls className="w-full rounded-xl border border-slate-200 shadow-sm max-h-[350px]" />
-              <button
-                onClick={handleAnalyze}
-                disabled={loading}
-                className="mt-4 w-full py-3 text-base font-bold text-white bg-gradient-to-r from-indigo-500 to-blue-600 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60"
-              >
-                {loading ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing...</>
-                ) : (
-                  <><ImageIcon className="w-5 h-5" /> Generate Accident Diagram</>
-                )}
-              </button>
-            </div>
-          )}
 
           {/* Progress */}
           {progress && (
