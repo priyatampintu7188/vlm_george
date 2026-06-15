@@ -18,7 +18,7 @@ services:
 
   # React+Vite Frontend
   frontend:
-    build: ./frontend
+    build: ./vlm_diagram_ui
     container_name: vlm_frontend
     ports:
       - "7860:80"

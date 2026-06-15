@@ -1,0 +1,90 @@
+{
+  "accident_summary": "A silver sedan collides with a gold sedan on a multi-lane highway bridge. The impact causes the silver sedan to spin and crash into the concrete barrier, resulting in debris and a visible skid mark. The gold sedan is also damaged and appears to have been pushed or struck by the silver sedan.",
+  "fault_assessment": {
+    "at_fault_vehicle_id": "1",
+    "rationale": "The silver sedan (vehicle 1) appears to have been driving in the wrong lane or failed to maintain a safe distance, leading to a collision with the gold sedan (vehicle 2). The silver sedan's trajectory after impact indicates it was the primary cause of the accident, as it spun out and struck the barrier, while the gold sedan was pushed or struck from behind."
+  },
+  "involvement": [
+    {
+      "id": "1",
+      "role": "Striking",
+      "description": "The silver sedan, which was driving in the wrong lane or too close to the gold sedan, collided with it."
+    },
+    {
+      "id": "2",
+      "role": "Struck",
+      "description": "The gold sedan was struck by the silver sedan, causing it to be pushed or hit from behind."
+    }
+  ],
+  "annotations": [
+    {
+      "x": 500,
+      "y": 600,
+      "text": "Impact point between silver and gold sedans"
+    },
+    {
+      "x": 550,
+      "y": 550,
+      "text": "Skid marks from silver sedan after collision"
+    },
+    {
+      "x": 650,
+      "y": 450,
+      "text": "Silver sedan after spinning into barrier"
+    }
+  ],
+  "scene_layout": {
+    "scene_type": "narrow street",
+    "road_segments": [
+      {
+        "name": "Highway Bridge",
+        "orientation": "horizontal",
+        "position": [
+          0,
+          375,
+          1400,
+          625
+        ]
+      }
+    ],
+    "sidewalks": [],
+    "buildings": [
+      {
+        "name": "Building A",
+        "position": [
+          0,
+          500,
+          150,
+          650
+        ]
+      },
+      {
+        "name": "Building B",
+        "position": [
+          300,
+          550,
+          400,
+          650
+        ]
+      }
+    ],
+    "vehicles": [
+      {
+        "id": "1",
+        "type": "sedan",
+        "x": 450,
+        "y": 500,
+        "heading": 180
+      },
+      {
+        "id": "2",
+        "type": "sedan",
+        "x": 550,
+        "y": 500,
+        "heading": 180
+      }
+    ],
+    "signals": [],
+    "north_arrow": true
+  }
+}

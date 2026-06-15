@@ -14,6 +14,7 @@ from pydantic import BaseModel
 import logging
 import requests
 from video_utils import extract_frames, encode_image
+from video_to_diagram import process_video_to_diagram
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -163,6 +164,42 @@ async def upload_file(file: UploadFile = File(...)):
             temp_path.unlink()
         raise
 
+
+@app.post("/api/generate-diagram")
+async def generate_diagram(video: UploadFile = File(...)):
+    """
+    Accept an accident video, analyze it with VLM, and return the generated diagram.
+    """
+    content = await video.read()
+    filename = video.filename or "accident.mp4"
+    ext = Path(filename).suffix.lower()
+    
+    # Save to disk for processing
+    video_id = str(uuid.uuid4())
+    temp_path = UPLOADS_DIR / f"{video_id}{ext}"
+    temp_path.write_bytes(content)
+    
+    try:
+        # Run the VLM -> SVG -> PNG pipeline
+        # Note: In a production app, this should be a background task
+        out_png = UPLOADS_DIR / f"{video_id}_diagram.png"
+        analysis_data = process_video_to_diagram(str(temp_path), output_png=str(out_png))
+        
+        # Read the generated PNG and encode to base64
+        diagram_b64 = base64.b64encode(out_png.read_bytes()).decode()
+        
+        return {
+            "success": True,
+            "diagram_b64": diagram_b64,
+            "analysis": analysis_data
+        }
+    except Exception as e:
+        logger.exception(f"Error generating diagram: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # Cleanup
+        if temp_path.exists():
+            temp_path.unlink()
 
 # ─── Video Serve Endpoint ──────────────────────────────────────────────────────
 

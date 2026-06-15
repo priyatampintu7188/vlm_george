@@ -1,0 +1,48 @@
+{
+    "scene_type": "intersection",
+    "road_segments": [
+        {
+            "name": "W 7 Mile Rd",
+            "orientation": "horizontal",
+            "position": [
+                0,
+                0,
+                1000,
+                250
+            ]
+        },
+        {
+            "name": "Livernais",
+            "orientation": "vertical",
+            "position": [
+                400,
+                0,
+                600,
+                800
+            ]
+        }
+    ],
+    "vehicles": [
+        {
+            "id": "car_1",
+            "type": "sedan",
+            "x": 120,
+            "y": 340,
+            "heading": 90,
+            "bbox": [
+                100,
+                320,
+                180,
+                360
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "type": "traffic_light",
+            "x": 500,
+            "y": 400
+        }
+    ],
+    "north_arrow": true
+}

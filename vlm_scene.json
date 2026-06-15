@@ -1,0 +1,43 @@
+{
+  "scene_type": "intersection",
+  "road_segments": [
+    {
+      "name": "Main Street",
+      "orientation": "horizontal",
+      "position": [
+        0,
+        375,
+        1400,
+        625
+      ]
+    },
+    {
+      "name": "Side Street",
+      "orientation": "vertical",
+      "position": [
+        575,
+        0,
+        825,
+        1000
+      ]
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "1",
+      "type": "sedan",
+      "x": 550,
+      "y": 450,
+      "heading": 180
+    },
+    {
+      "id": "2",
+      "type": "sedan",
+      "x": 650,
+      "y": 350,
+      "heading": 90
+    }
+  ],
+  "signals": [],
+  "north_arrow": true
+}
