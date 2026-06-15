@@ -16,6 +16,30 @@ const DiagramPortal: React.FC<Props> = ({ user, onLogout }) => {
   const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const samples = [
+    { name: 'Collision 1', url: '/samples/sample_video.mp4' },
+    { name: 'Collision 2', url: '/samples/sample_video2.mp4' },
+  ];
+
+  const handleSampleClick = async (sample: { name: string, url: string }) => {
+    try {
+      setLoading(true);
+      setProgress(`Loading sample ${sample.name}...`);
+      const response = await fetch(sample.url);
+      const blob = await response.blob();
+      const file = new File([blob], sample.url.split('/').pop() || 'sample.mp4', { type: 'video/mp4' });
+      setVideoFile(file);
+      setVideoPreviewUrl(sample.url);
+      setResult(null);
+      setError('');
+    } catch (err) {
+      setError('Failed to load sample video.');
+    } finally {
+      setLoading(false);
+      setProgress('');
+    }
+  };
+
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -107,6 +131,23 @@ const DiagramPortal: React.FC<Props> = ({ user, onLogout }) => {
             <p className="text-slate-500 font-medium">Drop a video file here or click to browse</p>
             <p className="text-xs text-slate-400">Supports MP4, AVI, MOV, MKV</p>
             <input ref={fileInputRef} type="file" accept="video/*" className="hidden" onChange={handleFileSelect} />
+          </div>
+
+          {/* Sample Videos */}
+          <div className="mt-4">
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Try a Sample Video</p>
+            <div className="flex gap-2">
+              {samples.map((s) => (
+                <button
+                  key={s.url}
+                  onClick={() => handleSampleClick(s)}
+                  disabled={loading}
+                  className="flex-1 py-2 px-3 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-indigo-400 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2"
+                >
+                  <FileVideo className="w-4 h-4 text-indigo-400" /> {s.name}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Video Preview */}
